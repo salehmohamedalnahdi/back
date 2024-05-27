@@ -4,6 +4,7 @@
 const express = require('express');
 const http = require('http');
 const socketIO = require('socket.io');
+const { createProxyMiddleware } = require('http-proxy-middleware');
 
 const app = express();
 const server = http.createServer(app);
@@ -15,6 +16,18 @@ app.use((req, res, next) => {
   next();
 });
 
+// Define the proxy middleware
+const proxyOptions = {
+  target: 'https://back-l9k2.onrender.com', // Replace with your target server URL
+  changeOrigin: true,
+  secure: false, // Set to true if your target server uses HTTPS
+};
+
+// Create the proxy middleware
+const proxy = createProxyMiddleware('/', proxyOptions);
+
+// Use the proxy middleware
+app.use(proxy);
 // Store connected users
 const users = {};
 
