@@ -26,7 +26,7 @@ app.use((req, res, next) => {
 io.on('connection', (socket) => {
   console.log('A user connected');
 
-  socket.on('message', (data) => {
+  socket.on('newmessage', (data) => {
     console.log('Received message:', data);
     io.emit('message', data);
   });
